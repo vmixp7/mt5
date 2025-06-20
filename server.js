@@ -2,21 +2,19 @@ const https = require("https");
 const crypto = require('crypto');
 const buffer = require('buffer');
 
-function MT5Request(server, port) {
+function MT5Request(server) {
   this.server = server;
-  this.port = port;
   this.https = new https.Agent();
-  this.https.maxSockets = 1; // 仅使用一个连接
+  this.https.maxSockets = 10; // 仅使用一个连接
 }
 
 MT5Request.prototype.Get = function (path, callback) {
   var options = {
     hostname:this.server,
-    port:this.port,
     path: path,
     agent:this.https,
     headers: { "Connection":"keep-alive" },
-  //rejectUnauthorized: false, //如果您使用自签名证书，请取消注释此行
+    rejectUnauthorized: false, //如果您使用自签名证书，请取消注释此行
   };
   var req = https.get(options, function (res) {
     res.setEncoding('utf8');
@@ -69,11 +67,12 @@ MT5Request.prototype.Post = function (path, body, callback) {
 
 MT5Request.prototype.ParseBodyJSON = function (error, res, body, callback) {
   if (error) {
-    console.log("Request error-- " + error);
+    console.log("Request error1-- " + error);
     callback && callback(error);
     return (null);
   }
   if (res.statusCode != 200) {
+    console.log("Request error2-- " + res.statusMessage);
     callback && callback(res.statusCode);
     return (null);
   }
@@ -138,7 +137,8 @@ MT5Request.prototype.Auth = function (login, password, build, agent, callback) {
   if (!login || !password || !build || !agent)
     return;
   var self = this;
-  self.Get("/api/auth/start?version=" + build + "&agent=" + agent + "&login=" + login + "&type=manager", function (error, res, body) {
+  // self.Get("/api/auth/start?version=" + build + "&agent=" + agent + "&login=" + login + "&type=manager", function (error, res, body) {
+  self.Get("/api/auth/start?version=484&agent=web&login=2003&type=manager", function (error, res, body) {
     var answer = self.ParseBodyJSON(error, res, body, callback);
     if (answer) {
       var srv_rand_answer = self.ProcessAuth(answer, password);
@@ -159,9 +159,10 @@ MT5Request.prototype.Auth = function (login, password, build, agent, callback) {
 };
 
 // 使用示例
-var req = new MT5Request("192.109.17.27", 443);
+// var req = new MT5Request("192.109.17.27", 443);
+var req = new MT5Request('webapi.anshinfx.com');
 // 使用“验证”命令在服务器上进行身份验证
-req.Auth(2003,"V!Ma5qIb", 1985,"WebManager", function (error) {
+req.Auth(2003,"V!Ma5qIb123", 1985,"WebManager", function (error) {
   if (error) {
     console.log(error);
     return;
