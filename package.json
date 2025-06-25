@@ -1,12 +1,24 @@
 {
-  "name": "mt5",
-  "version": "1.0.0",
-  "main": "server.js",
+  "name": "Mackscoin",
+  "description": "",
+  "main": ".eslintrc.js",
+  "dependencies": {
+    "fetch-cookie": "^3.1.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-helmet": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-router": "^7.4.0",
+    "koa-sslify": "^5.0.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.3.1",
+    "koa2-cors": "^2.0.6",
+    "koa2-ratelimit": "^1.1.1",
+    "node-fetch": "^2.7.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node ./app"
   },
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "ISC"
 }
