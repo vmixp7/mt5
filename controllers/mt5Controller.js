@@ -287,7 +287,40 @@ exports.check = async (ctx) => {
         return;
       }
 
-      const url = `position/check?login=${id}`;
+      const url = `/api/position/check?login=${id}`;
+      req.Get(url, function (error, res, body) {
+        if (error) {
+          console.log("Error:", error);
+          ctx.body = { error: "Request failed" };
+          return;
+        }
+        const result = req.ParseBodyJSON(error, res, body, null);
+        console.log(`result-->`, result);
+        const answer = result?.answer;
+
+        console.log(`answer-->`, answer);
+        ctx.body = { datas : answer };
+      });
+
+    });
+
+};
+exports.lastTick = async (ctx) => {
+
+    const symbol = ctx.query.symbol;
+    if (!symbol) {
+      ctx.body = { error: "Missing symbol" };
+      return;
+    }
+
+    var req = new MT5Request(SERVER, 443);
+    req.Auth(LOGIN, PASSWORD, 1985, "WebManager", function (error) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      const url = `/api/tick/last?symbol=${symbol}&trans_id=0`;
       req.Get(url, function (error, res, body) {
         if (error) {
           console.log("Error:", error);
