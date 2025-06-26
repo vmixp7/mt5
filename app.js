@@ -47,14 +47,5 @@ app.listen(3000, () => {
   console.log('Server is running at http://localhost:3000');
 });
 
-// const options = {
-//   key: fs.readFileSync('./ssl/key.pem'),
-//   cert: fs.readFileSync('./ssl/cert.pem'),
-// };
-// // 建立 HTTPS Server
-// https.createServer(options, app.callback()).listen(443, () => {
-//   console.log('HTTPS Server is running at https://localhost');
-// });
-
 
 
