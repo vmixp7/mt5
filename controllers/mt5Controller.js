@@ -5,6 +5,7 @@ const buffer = require('buffer');
 const SERVER = 'webapi.anshinfx.com';
 const LOGIN = '2003';
 const PASSWORD = 'V!Ma5qIb123';
+// const LOGIN = '10000';
 // const PASSWORD = 'Test1234!';
 
 function MT5Request(server, port) {
