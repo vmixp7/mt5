@@ -3,9 +3,9 @@ const crypto = require('crypto');
 const buffer = require('buffer');
 const symbolLibrary = require('../lib/symbol');
 const lastTickLibrary = require('../lib/lastTick');
-const checkOrderLibrary = require('../lib/checkOrder');
-const buyLibrary = require('../lib/buy');
-const sellLibrary = require('../lib/sell');
+const checkPositionLibrary = require('../lib/checkPosition');
+const openLibrary = require('../lib/open');
+const closeLibrary = require('../lib/close');
 
 const SERVER = 'webapi.anshinfx.com';
 const LOGIN = '2003';
@@ -48,7 +48,7 @@ exports.lastTick = async (ctx) => {
       data: result,
     }
 };
-exports.checkOrder = async (ctx) => {
+exports.checkPosition = async (ctx) => {
     const login = ctx.query.login;
     if (!login) {
       ctx.status = 400;
@@ -58,17 +58,18 @@ exports.checkOrder = async (ctx) => {
       };
       return;
     }
-    const result = await checkOrderLibrary(login);
+    const result = await checkPositionLibrary(login);
     ctx.status = 200;
     ctx.body = {
       code: 0,
       data: result,
     }
 };
-exports.buy = async (ctx) => {
+exports.open = async (ctx) => {
   const login = ctx.query.login;
   const symbol = ctx.query.symbol;
-  if (!login || !symbol) {
+  const buyType = ctx.query.type;
+  if (!login || !symbol || !buyType) {
     ctx.status = 400;
     ctx.body = {
       code: 1,
@@ -76,18 +77,18 @@ exports.buy = async (ctx) => {
     };
     return;
   }
-  const result = await buyLibrary(login, symbol);
+  const result = await openLibrary(login, symbol, buyType);
   ctx.status = 200;
   ctx.body = {
     code: 0,
     data: result,
   }
 };
-exports.sell = async (ctx) => {
+exports.close = async (ctx) => {
   const login = ctx.query.login;
   const symbol = ctx.query.symbol;
-  const order = ctx.query.order;
-  if (!login || !symbol || !order) {
+  const position = ctx.query.position;
+  if (!login || !symbol || !position) {
     ctx.status = 400;
     ctx.body = {
       code: 1,
@@ -95,7 +96,7 @@ exports.sell = async (ctx) => {
     };
     return;
   }
-  const result = await sellLibrary(login, symbol, order);
+  const result = await closeLibrary(login, symbol, position);
   ctx.status = 200;
   ctx.body = {
     code: 0,
