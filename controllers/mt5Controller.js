@@ -134,9 +134,9 @@ exports.close = async (ctx) => {
 exports.checkPassword = async (ctx) => {
   try {
     const login = ctx.query.login;
-    const paassword = ctx.query.paassword;
+    const password = ctx.query.password;
     const mtype = ctx.query.type;
-    if (!login || !mtype || !paassword) {
+    if (!login || !mtype || !password) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -144,7 +144,7 @@ exports.checkPassword = async (ctx) => {
       };
       return;
     }
-    const result = await checkPasswordLibrary(login, mtype, paassword);
+    const result = await checkPasswordLibrary(login, mtype, password);
     ctx.status = 200;
     let dataStr = 'ok';
     if (result !== '0 Done') {
