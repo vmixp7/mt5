@@ -105,10 +105,8 @@ exports.open = async (ctx) => {
 }
 exports.close = async (ctx) => {
   try {
-    const login = ctx.query.login;
-    const symbol = ctx.query.symbol;
-    const position = ctx.query.position;
-    if (!login || !symbol || !position) {
+    const { login, symbol, position, type } = ctx.query;
+    if (!login || !symbol || !position || !type) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -116,7 +114,7 @@ exports.close = async (ctx) => {
       };
       return;
     }
-    const result = await closeLibrary(login, symbol, position);
+    const result = await closeLibrary(login, symbol, position, type);
     ctx.status = 200;
     ctx.body = {
       code: 0,
