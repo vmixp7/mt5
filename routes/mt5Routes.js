@@ -9,5 +9,6 @@ router.get('/v1/open', mt5Controller.open);
 router.get('/v1/close', mt5Controller.close);
 router.get('/v1/check_position', mt5Controller.checkPosition);
 router.get('/v1/last_tick', mt5Controller.lastTick);
+router.get('/v1/check_password', mt5Controller.checkPassword);
 
 module.exports = router;
