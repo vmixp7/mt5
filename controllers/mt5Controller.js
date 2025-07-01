@@ -80,7 +80,8 @@ exports.open = async (ctx) => {
     const login = ctx.query.login;
     const symbol = ctx.query.symbol;
     const buyType = ctx.query.type;
-    if (!login || !symbol || !buyType) {
+    const volume = ctx.query.volume;
+    if (!login || !symbol || !buyType || !volume) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -88,7 +89,7 @@ exports.open = async (ctx) => {
       };
       return;
     }
-    const result = await openLibrary(login, symbol, buyType);
+    const result = await openLibrary(login, symbol, buyType, volume);
     ctx.status = 200;
     ctx.body = {
       code: 0,
