@@ -4,7 +4,7 @@ module.exports = {
       name: "mt5api", // 你可以自訂應用名稱
       script: "app.js", // 你的主程式檔案
       node_args: "--max-old-space-size=4096", // 記憶體上限 4GB
-      instances: 2, // 啟動幾個實例（你也可以用 'max' 自動判斷 CPU 核心數）
+      // instances: 1, // 啟動幾個實例（你也可以用 'max' 自動判斷 CPU 核心數）
       autorestart: true,
       watch: false,
       max_memory_restart: "4G", // 當超過 2G 記憶體時自動重啟

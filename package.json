@@ -17,7 +17,7 @@
     "node-fetch": "^2.7.0"
   },
   "scripts": {
-    "prod:start": "pm2-runtime app.js"
+    "start": "node ./app"
   },
   "author": "",
   "license": "ISC"

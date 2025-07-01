@@ -20,14 +20,32 @@ exports.testAccess = async (ctx) => {
   ];
 }
 exports.getSymbol = async (ctx) => {
-  const result = await symbolLibrary('EURUSD');
-  ctx.status = 200;
-  ctx.body = {
-    ok: result,
+  try {
+    console.log('getSymbol params--', JSON.stringify(ctx.query));
+    const symbol = ctx.query.symbol;
+    if (!symbol) {
+      ctx.status = 400;
+      ctx.body = { error: "Missing symbol" };
+      return;
+    }
+    const result = await symbolLibrary(symbol);
+    ctx.status = 200;
+    ctx.body = {
+      code: 0,
+      data: result,
+    }
+  } catch (error) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 1,
+      msg: "Internal Server Error",
+      error: error.message
+    }
   }
 }
 exports.lastTick = async (ctx) => {
   try {
+    console.log('lastTick params--', JSON.stringify(ctx.query));
     const symbol = ctx.query.symbol;
     if (!symbol) {
       ctx.status = 400;
@@ -51,6 +69,7 @@ exports.lastTick = async (ctx) => {
 }
 exports.checkPosition = async (ctx) => {
   try {
+    console.log('checkPosition params--', JSON.stringify(ctx.query));
     const login = ctx.query.login;
     if (!login) {
       ctx.status = 400;
@@ -77,12 +96,9 @@ exports.checkPosition = async (ctx) => {
 }
 exports.open = async (ctx) => {
   try {
-    const login = ctx.query.login;
-    const symbol = ctx.query.symbol;
-    const buyType = ctx.query.type;
-    const volume = ctx.query.volume;
     console.log('open params--', JSON.stringify(ctx.query));
-    if (!login || !symbol || !buyType || !volume) {
+    const {login,symbol,type,volume } = ctx.query;
+    if (!login || !symbol || !type || !volume) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -90,9 +106,7 @@ exports.open = async (ctx) => {
       };
       return;
     }
-    console.time('openTime--');
-    const result = await openLibrary(login, symbol, buyType, volume);
-    console.timeEnd('openTime--');
+    const result = await openLibrary(login, symbol, type, volume);
     ctx.status = 200;
     ctx.body = {
       code: 0,
@@ -109,6 +123,7 @@ exports.open = async (ctx) => {
 }
 exports.close = async (ctx) => {
   try {
+    console.log('close params--', JSON.stringify(ctx.query));
     const { login, symbol, position, type } = ctx.query;
     if (!login || !symbol || !position || !type) {
       ctx.status = 400;
@@ -135,10 +150,9 @@ exports.close = async (ctx) => {
 }
 exports.checkPassword = async (ctx) => {
   try {
-    const login = ctx.query.login;
-    const password = ctx.query.password;
-    const mtype = ctx.query.type;
-    if (!login || !mtype || !password) {
+    console.log('checkPassword params--', JSON.stringify(ctx.query));
+    const { login, password, type } = ctx.query;
+    if (!login || !type || !password) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -146,7 +160,7 @@ exports.checkPassword = async (ctx) => {
       };
       return;
     }
-    const result = await checkPasswordLibrary(login, mtype, password);
+    const result = await checkPasswordLibrary(login, type, password);
     ctx.status = 200;
     let dataStr = 'ok';
     if (result !== '0 Done') {
