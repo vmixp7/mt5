@@ -81,6 +81,7 @@ exports.open = async (ctx) => {
     const symbol = ctx.query.symbol;
     const buyType = ctx.query.type;
     const volume = ctx.query.volume;
+    console.log('open params--', JSON.stringify(ctx.query));
     if (!login || !symbol || !buyType || !volume) {
       ctx.status = 400;
       ctx.body = {
@@ -89,7 +90,9 @@ exports.open = async (ctx) => {
       };
       return;
     }
+    console.time('openTime--');
     const result = await openLibrary(login, symbol, buyType, volume);
+    console.timeEnd('openTime--');
     ctx.status = 200;
     ctx.body = {
       code: 0,
