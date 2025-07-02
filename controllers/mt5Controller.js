@@ -7,17 +7,28 @@ const checkPositionLibrary = require('../lib/checkPosition');
 const openLibrary = require('../lib/open');
 const closeLibrary = require('../lib/close');
 const checkPasswordLibrary = require('../lib/checkPassword');
+const testAccessLibrary = require('../lib/testAccess');
 
 exports.ping = async (ctx) => {
   ctx.status = 200;
   ctx.body = 'pong';
 }
 exports.testAccess = async (ctx) => {
-  ctx.statusCode = 201;
-  ctx.body = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' }
-  ];
+  try {
+    const result = await testAccessLibrary();
+    ctx.statusCode = 200;
+    ctx.body = {
+      code: 0,
+      data: result,
+    }
+  } catch (error) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 1,
+      msg: "Internal Server Error",
+      error: error.message ? error.message : error
+    }
+  }
 }
 exports.getSymbol = async (ctx) => {
   try {
@@ -45,7 +56,7 @@ exports.getSymbol = async (ctx) => {
 }
 exports.lastTick = async (ctx) => {
   try {
-    console.log('lastTick params--', JSON.stringify(ctx.query));
+    // console.log('lastTick params--', JSON.stringify(ctx.query));
     const symbol = ctx.query.symbol;
     if (!symbol) {
       ctx.status = 400;
@@ -69,7 +80,7 @@ exports.lastTick = async (ctx) => {
 }
 exports.checkPosition = async (ctx) => {
   try {
-    console.log('checkPosition params--', JSON.stringify(ctx.query));
+    // console.log('checkPosition params--', JSON.stringify(ctx.query));
     const login = ctx.query.login;
     if (!login) {
       ctx.status = 400;
@@ -124,8 +135,8 @@ exports.open = async (ctx) => {
 exports.close = async (ctx) => {
   try {
     console.log('close params--', JSON.stringify(ctx.query));
-    const { login, symbol, position, type } = ctx.query;
-    if (!login || !symbol || !position || !type) {
+    const { login, symbol, position, type, volume } = ctx.query;
+    if (!login || !symbol || !position || !type || !volume) {
       ctx.status = 400;
       ctx.body = {
         code: 1,
@@ -133,7 +144,7 @@ exports.close = async (ctx) => {
       };
       return;
     }
-    const result = await closeLibrary(login, symbol, position, type);
+    const result = await closeLibrary(login, symbol, position, type, volume);
     ctx.status = 200;
     ctx.body = {
       code: 0,
