@@ -13,6 +13,10 @@ const groupGetLibrary = require('../lib/groupGet');
 const symbolGetGroupLibrary = require('../lib/symbolGetGroup');
 
 exports.ping = async (ctx) => {
+  // 等三秒，確認服務器是否正常運行
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  const currentSeconds = new Date().getSeconds();
+  console.log('currentSeconds--', currentSeconds);
   ctx.status = 200;
   ctx.body = 'pong';
 }
@@ -111,7 +115,7 @@ exports.checkPosition = async (ctx) => {
 exports.open = async (ctx) => {
   try {
     console.log('open params--', JSON.stringify(ctx.query));
-    const {login,symbol,type,volume } = ctx.query;
+    const { login, symbol, type, volume } = ctx.query;
     if (!login || !symbol || !type || !volume) {
       ctx.status = 400;
       ctx.body = {
@@ -244,7 +248,7 @@ exports.groupGet = async (ctx) => {
 exports.symbolGetGroup = async (ctx) => {
   try {
     console.log('symbolGetGroup params--', JSON.stringify(ctx.query));
-    const {symbol, group } = ctx.query;
+    const { symbol, group } = ctx.query;
     if (!symbol || !group) {
       ctx.status = 400;
       ctx.body = { error: "Missing params" };
