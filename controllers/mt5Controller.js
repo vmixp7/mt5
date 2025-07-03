@@ -8,6 +8,9 @@ const openLibrary = require('../lib/open');
 const closeLibrary = require('../lib/close');
 const checkPasswordLibrary = require('../lib/checkPassword');
 const testAccessLibrary = require('../lib/testAccess');
+const userGetLibrary = require('../lib/userGet');
+const groupGetLibrary = require('../lib/groupGet');
+const symbolGetGroupLibrary = require('../lib/symbolGetGroup');
 
 exports.ping = async (ctx) => {
   ctx.status = 200;
@@ -180,6 +183,78 @@ exports.checkPassword = async (ctx) => {
     ctx.body = {
       code: 0,
       data: dataStr,
+    }
+  } catch (error) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 1,
+      msg: "Internal Server Error",
+      error: error.message
+    }
+  }
+}
+exports.userGet = async (ctx) => {
+  try {
+    console.log('userGet params--', JSON.stringify(ctx.query));
+    const login = ctx.query.login;
+    if (!login) {
+      ctx.status = 400;
+      ctx.body = { error: "Missing login" };
+      return;
+    }
+    const result = await userGetLibrary(login);
+    ctx.status = 200;
+    ctx.body = {
+      code: 0,
+      data: result,
+    }
+  } catch (error) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 1,
+      msg: "Internal Server Error",
+      error: error.message
+    }
+  }
+}
+exports.groupGet = async (ctx) => {
+  try {
+    console.log('groupGet params--', JSON.stringify(ctx.query));
+    const group = ctx.query.group;
+    if (!group) {
+      ctx.status = 400;
+      ctx.body = { error: "Missing group" };
+      return;
+    }
+    const result = await groupGetLibrary(group);
+    ctx.status = 200;
+    ctx.body = {
+      code: 0,
+      data: result,
+    }
+  } catch (error) {
+    ctx.status = 500;
+    ctx.body = {
+      code: 1,
+      msg: "Internal Server Error",
+      error: error.message
+    }
+  }
+}
+exports.symbolGetGroup = async (ctx) => {
+  try {
+    console.log('symbolGetGroup params--', JSON.stringify(ctx.query));
+    const {symbol, group } = ctx.query;
+    if (!symbol || !group) {
+      ctx.status = 400;
+      ctx.body = { error: "Missing params" };
+      return;
+    }
+    const result = await symbolGetGroupLibrary(group);
+    ctx.status = 200;
+    ctx.body = {
+      code: 0,
+      data: result,
     }
   } catch (error) {
     ctx.status = 500;
