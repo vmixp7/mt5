@@ -13,10 +13,6 @@ const groupGetLibrary = require('../lib/groupGet');
 const symbolGetGroupLibrary = require('../lib/symbolGetGroup');
 
 exports.ping = async (ctx) => {
-  // 等三秒，確認服務器是否正常運行
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  const currentSeconds = new Date().getSeconds();
-  console.log('currentSeconds--', currentSeconds);
   ctx.status = 200;
   ctx.body = 'pong';
 }
