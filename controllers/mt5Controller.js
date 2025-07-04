@@ -29,7 +29,7 @@ exports.testAccess = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message ? error.message : error
+      error: error.message || error
     }
   }
 }
@@ -53,7 +53,7 @@ exports.getSymbol = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -77,7 +77,7 @@ exports.lastTick = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -104,7 +104,7 @@ exports.checkPosition = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -131,7 +131,7 @@ exports.open = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -158,7 +158,7 @@ exports.close = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -189,7 +189,7 @@ exports.checkPassword = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -213,7 +213,7 @@ exports.userGet = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -237,7 +237,7 @@ exports.groupGet = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
@@ -261,7 +261,7 @@ exports.symbolGetGroup = async (ctx) => {
     ctx.body = {
       code: 1,
       msg: "Internal Server Error",
-      error: error.message
+      error: error.message || error
     }
   }
 }
