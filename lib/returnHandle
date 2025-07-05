@@ -1,0 +1,19 @@
+module.exports = {
+    returnSuccess: (ctx, result) => {
+        ctx.status = 200;
+        ctx.body = {
+            code: 0,
+            data: result,
+        }
+    },
+    returnError: (ctx, error) => {
+        const url = ctx.request.url;
+        ctx.status = 500;
+        ctx.body = {
+            code: 1,
+            msg: `${url} Error`,
+            error: error.message || error
+        };
+        console.error(`[Error] ${url} --`, JSON.stringify(error));
+    }
+};

@@ -1,6 +1,3 @@
-const https = require("https");
-const crypto = require('crypto');
-const buffer = require('buffer');
 const symbolLibrary = require('../lib/symbol');
 const lastTickLibrary = require('../lib/lastTick');
 const checkPositionLibrary = require('../lib/checkPosition');
@@ -11,27 +8,19 @@ const testAccessLibrary = require('../lib/testAccess');
 const userGetLibrary = require('../lib/userGet');
 const groupGetLibrary = require('../lib/groupGet');
 const symbolGetGroupLibrary = require('../lib/symbolGetGroup');
+const { returnError, returnSuccess } = require('../lib/returnHandle');
 
-exports.ping = async (ctx) => {
-  ctx.status = 200;
-  ctx.body = 'pong';
-}
 exports.testAccess = async (ctx) => {
   try {
     const result = await testAccessLibrary();
-    ctx.statusCode = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
+}
+exports.ping = async (ctx) => {
+  ctx.status = 200;
+  ctx.body = 'ping';
 }
 exports.getSymbol = async (ctx) => {
   try {
@@ -43,23 +32,14 @@ exports.getSymbol = async (ctx) => {
       return;
     }
     const result = await symbolLibrary(symbol);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.lastTick = async (ctx) => {
   try {
-    console.log('lastTick params--', JSON.stringify(ctx.query));
+    // console.log('lastTick params--', JSON.stringify(ctx.query));
     const symbol = ctx.query.symbol;
     if (!symbol) {
       ctx.status = 400;
@@ -67,18 +47,9 @@ exports.lastTick = async (ctx) => {
       return;
     }
     const result = await lastTickLibrary(symbol);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.checkPosition = async (ctx) => {
@@ -94,18 +65,9 @@ exports.checkPosition = async (ctx) => {
       return;
     }
     const result = await checkPositionLibrary(login);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.open = async (ctx) => {
@@ -121,18 +83,9 @@ exports.open = async (ctx) => {
       return;
     }
     const result = await openLibrary(login, symbol, type, volume);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.close = async (ctx) => {
@@ -148,18 +101,9 @@ exports.close = async (ctx) => {
       return;
     }
     const result = await closeLibrary(login, symbol, position, type, volume);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.checkPassword = async (ctx) => {
@@ -180,17 +124,9 @@ exports.checkPassword = async (ctx) => {
     if (result !== '0 Done') {
       dataStr = 'error';
     }
-    ctx.body = {
-      code: 0,
-      data: dataStr,
-    }
+    returnSuccess(ctx, dataStr);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.userGet = async (ctx) => {
@@ -203,18 +139,9 @@ exports.userGet = async (ctx) => {
       return;
     }
     const result = await userGetLibrary(login);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.groupGet = async (ctx) => {
@@ -227,18 +154,9 @@ exports.groupGet = async (ctx) => {
       return;
     }
     const result = await groupGetLibrary(group);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
 exports.symbolGetGroup = async (ctx) => {
@@ -251,17 +169,8 @@ exports.symbolGetGroup = async (ctx) => {
       return;
     }
     const result = await symbolGetGroupLibrary(group);
-    ctx.status = 200;
-    ctx.body = {
-      code: 0,
-      data: result,
-    }
+    returnSuccess(ctx, result);
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = {
-      code: 1,
-      msg: "Internal Server Error",
-      error: error.message || error
-    }
+    returnError(ctx, error);
   }
 }
