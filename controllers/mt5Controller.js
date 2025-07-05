@@ -59,7 +59,7 @@ exports.getSymbol = async (ctx) => {
 }
 exports.lastTick = async (ctx) => {
   try {
-    // console.log('lastTick params--', JSON.stringify(ctx.query));
+    console.log('lastTick params--', JSON.stringify(ctx.query));
     const symbol = ctx.query.symbol;
     if (!symbol) {
       ctx.status = 400;
