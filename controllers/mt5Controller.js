@@ -119,7 +119,6 @@ exports.checkPassword = async (ctx) => {
       return;
     }
     const result = await checkPasswordLibrary(login, type, password);
-    ctx.status = 200;
     let dataStr = 'ok';
     if (result !== '0 Done') {
       dataStr = 'error';
