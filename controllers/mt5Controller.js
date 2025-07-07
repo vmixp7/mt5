@@ -161,13 +161,13 @@ exports.groupGet = async (ctx) => {
 exports.symbolGetGroup = async (ctx) => {
   try {
     console.log('symbolGetGroup params--', JSON.stringify(ctx.query));
-    const { symbol, group } = ctx.query;
-    if (!symbol || !group) {
+    const { symbol, login } = ctx.query;
+    if (!symbol || !login) {
       ctx.status = 400;
       ctx.body = { error: "Missing params" };
       return;
     }
-    const result = await symbolGetGroupLibrary(group);
+    const result = await symbolGetGroupLibrary(symbol, login);
     returnSuccess(ctx, result);
   } catch (error) {
     returnError(ctx, error);
