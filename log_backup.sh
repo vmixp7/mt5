@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 設定原始 log 路徑
-LOG_DIR="~/.pm2/logs"
+LOG_DIR="$HOME/.pm2/logs"
 OUT_LOG_FILE="$LOG_DIR/mt5proxy-out.log"
 ERR_LOG_FILE="$LOG_DIR/mt5proxy-error.log"
 
