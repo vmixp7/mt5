@@ -72,7 +72,6 @@ exports.checkPosition = async (ctx) => {
 }
 exports.open = async (ctx) => {
   try {
-    console.log('open params--', JSON.stringify(ctx.query));
     const { login, symbol, type, volume } = ctx.query;
     if (!login || !symbol || !type || !volume) {
       ctx.status = 400;
@@ -90,7 +89,6 @@ exports.open = async (ctx) => {
 }
 exports.close = async (ctx) => {
   try {
-    console.log('close params--', JSON.stringify(ctx.query));
     const { login, symbol, position, type, volume } = ctx.query;
     if (!login || !symbol || !position || !type || !volume) {
       ctx.status = 400;
