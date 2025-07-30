@@ -9,7 +9,32 @@ const userGetLibrary = require('../lib/userGet');
 const groupGetLibrary = require('../lib/groupGet');
 const symbolGetGroupLibrary = require('../lib/symbolGetGroup');
 const { returnError, returnSuccess } = require('../lib/returnHandle');
+const fetch = require('node-fetch');
 
+function myPromise() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve('第一步完成'), 1000);
+  });
+}
+async function getUser() {
+  try {
+    const response = await fetch('htt://jsonplaceholder.typicode.com/posts/1');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error; // 可以选择重新抛出错误
+  }
+}
+exports.ping = async (ctx) => {
+  try {
+    const data = await getUser();
+    console.log('GET 回傳資料:', data);
+    ctx.body = 'pong';
+  } catch (error) {
+    returnError(ctx, error);
+  }
+}
 exports.testAccess = async (ctx) => {
   try {
     const result = await testAccessLibrary();
@@ -17,10 +42,6 @@ exports.testAccess = async (ctx) => {
   } catch (error) {
     returnError(ctx, error);
   }
-}
-exports.ping = async (ctx) => {
-  ctx.status = 200;
-  ctx.body = 'ping';
 }
 exports.getSymbol = async (ctx) => {
   try {
